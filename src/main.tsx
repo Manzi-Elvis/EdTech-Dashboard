@@ -5,10 +5,19 @@ import { store } from "./app/store"
 import App from "./App"
 import "./index.css"
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>
-)
+async function init() {
+  if (import.meta.env.DEV) {
+    const { worker } = await import("./mock/browser")
+    worker.start()
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>
+  )
+}
+
+init()
